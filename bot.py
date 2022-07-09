@@ -72,7 +72,7 @@ def ewaste(update: Update, context: CallbackContext) -> None:
 
 
 def ewaste_select(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(f'{update.message.text} Selected!')
+    update.message.reply_text(f'You have selected {update.message.text}')
 
     global ewaste_item
     ewaste_item = update.message.text[2:]
