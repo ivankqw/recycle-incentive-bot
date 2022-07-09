@@ -111,7 +111,7 @@ def location(update: Update, context: CallbackContext) -> None:
         s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
     message.reply_text(s)
 
-    message.reply_text("To start over, press /start")
+    message.reply_text("/start to start over")
     
     return ConversationHandler.END
 
@@ -142,7 +142,7 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
         for i in range(5):
             s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
     message.reply_text(s)
-    message.reply_text("To start over, press /start")
+    message.reply_text("/start to start over")
     return ConversationHandler.END
 
 
