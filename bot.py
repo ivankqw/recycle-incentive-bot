@@ -4,8 +4,11 @@ from telegram.ext import Updater, CommandHandler, CallbackContext, ConversationH
     MessageHandler, Filters
 from dotenv import load_dotenv
 import os
+import pandas as pd
+from math import cos, sqrt, pi
 
 load_dotenv()  # take environment variables from .env.
+data_path = "./data/data_with_coordinates.xlsx"
 
 # Enable logging
 logging.basicConfig(
@@ -73,8 +76,26 @@ def location(update: Update, context: CallbackContext) -> None:
     message = update.message
     curr_longitude = message.location['longitude']
     curr_latitude = message.location['latitude']
-    message.reply_text(f'so you are at {curr_longitude}, {curr_latitude}')
+    # message.reply_text(f'so you are at {curr_longitude}, {curr_latitude}, yes?')
 
+    df = pd.read_excel(data_path, sheet_name="cash_for_trash")
+    df['distances'] = df.apply(lambda x: distance(x['Longitude'], x['Latitude'], curr_longitude, curr_latitude), axis=1)
+    result_df = df.sort_values('distances').iloc[0:5]
+    address_list = result_df['Address'].tolist()
+    day_list = result_df['Day'].tolist()
+    time_start_list = result_df['updated_time_start'].tolist()
+    time_end_list = result_df['updated_time_end'].tolist()
+    s = ''
+    for i in range(5):
+        s += f'\n\n {i+1}. \n address: {address_list[i]} \n day: {day_list[i]} \n start: {time_start_list[i]} \n end: {time_end_list[i]}'
+    message.reply_text(s)
+
+
+def distance(lon1, lat1, lon2, lat2):
+    R = 6371000  # radius of the Earth in m
+    x = (lon2 - lon1) * cos(0.5*(lat2+lat1))
+    y = (lat2 - lat1)
+    return (2*pi*R/360) * sqrt( x*x + y*y )
 
 def main() -> None:
     token = os.getenv("TOKEN")
