@@ -78,7 +78,9 @@ def location(update: Update, context: CallbackContext) -> None:
     curr_latitude = message.location['latitude']
     # message.reply_text(f'so you are at {curr_longitude}, {curr_latitude}, yes?')
 
-    df = pd.read_excel(data_path, sheet_name="cash_for_trash")
+    df = pd.read_excel(data_path, sheet_name="cash_for_trash", converters={'updated_time_start': str, 'updated_time_end': str})
+    df['updated_time_start'] = df['updated_time_start'].apply(lambda x: "0" + str(x) if len(str(x)) == 3 else str(x))
+    df['updated_time_end'] = df['updated_time_end'].apply(lambda x: "0" + str(x) if len(str(x)) == 3 else str(x))
     df['distances'] = df.apply(lambda x: distance(x['Longitude'], x['Latitude'], curr_longitude, curr_latitude), axis=1)
     result_df = df.sort_values('distances').iloc[0:5]
     address_list = result_df['Address'].tolist()
