@@ -115,12 +115,14 @@ def location(update: Update, context: CallbackContext) -> None:
     for i in range(5):
         # s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
         message.reply_text(
-            f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions</b>: {directions_list[i]}', parse_mode='HTML')
+            f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions</b>: {directions_list[i]}',
+            parse_mode='HTML')
     # message.reply_text(s)
 
-    message.reply_text("/start to start over")
-    
-
+    reply_keyboard = [["/start", "/help"]]
+    update.message.reply_text("Thank you for using me today! /start over or get /help",
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+                              parse_mode='HTML')
     return ConversationHandler.END
 
 
@@ -152,16 +154,16 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
                 parse_mode='HTML')
     else:
         for i in range(5):
-
             # s += f'\n\n {i + 1}. \n' +  "<u>Address:" +  f'{address_list[i]}' + "</u> \n \n\n <b>Get Directions</b>:" + f'{directions_list[i]}'
             message.reply_text(
                 f'\n\n {i + 1}. \n' + "Address: " + f'{address_list[i]}' + " \n \n\n <b>Get Directions</b>: " + f'{directions_list[i]}',
                 parse_mode='HTML')
     # message.reply_text(s, parse_mode='HTML')
 
-    message.reply_text("/start to start over")
-
-
+    reply_keyboard = [["/start", "/help"]]
+    update.message.reply_text("Thank you for using me today! /start over or get /help",
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+                              parse_mode='HTML')
     return ConversationHandler.END
 
 
