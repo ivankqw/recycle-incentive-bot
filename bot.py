@@ -108,8 +108,9 @@ def location(update: Update, context: CallbackContext) -> None:
     time_end_list = result_df['updated_time_end'].tolist()
     s = 'Here are your current top 5 nearest Cash For Trash locations! 🚮😸'
     for i in range(5):
-        s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions: {directions_list[i]}</b>'
-    message.reply_text(s, parse_mode='HTML')
+        s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
+    message.reply_text(s)
+
     
     return ConversationHandler.END
 
@@ -138,8 +139,9 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
             s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
     else:
         for i in range(5):
-            s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
-    message.reply_text(s, parse_mode='HTML')
+            s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
+    message.reply_text(s)
+    
     return ConversationHandler.END
 
 
