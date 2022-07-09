@@ -59,7 +59,7 @@ def fuckoffcallback():
 
 def fuckyescallback(update: Update, context: CallbackContext) -> None:
     query = update.callback_query
-    query.data 
+    query.data
     return
 
 
