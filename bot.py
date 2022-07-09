@@ -62,7 +62,7 @@ def ewaste(update: Update, context: CallbackContext) -> None:
     buttons = [
         [KeyboardButton("💻 ICT")],
         [KeyboardButton("🔋 Batteries")],
-        [KeyboardButton("🛋️ Lamps")],
+        [KeyboardButton("🛋️Lamps")],
         [KeyboardButton("🔵 Regulated")],
         [KeyboardButton("🍎 Non-regulated")],
     ]
