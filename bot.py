@@ -25,18 +25,19 @@ LOCATION = range(1)
 
 def help(update: Update, context: CallbackContext) -> None:
     "send a message when command help is issued"
-    s = "Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌷🌸💮🌹🥀\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
-    update.message.reply_text(s)
+    s1 = "<u> What is this bot for? </u> \n\n Did you know that you can get cash incentives for simply recycling? Do your part for the environment with us today 😊! It's easy to r(easy)cle like 1 2 3!<br><br>"
+    s2 = "<u> Key Features </u> \n\n <ul> <li>Find your nearest recycling locations</li> </ul><br><br>"
+    s3 = "<u> What is Cash For Trash? </u> <br><br> Cash-for-Trash is an incentive programme by Public Waste Collectors, where residents may bring their recyclables to the Cash-for-Trash stations and cash is given in exchange for recyclables. More information <a href='https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/recycling-collection-points'>here</a>. <br><br>"
+    s4 = "<u> What is the E-Waste recyling program? </u> <br><br> E-Waste is your mother"
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
-    update.message.reply_text(s,
+    update.message.reply_text(s1 + s2 + s3 + s4,
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 def start(update: Update, context: CallbackContext) -> None:
     s = "Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌷🌸💮🌹🥀\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
-    update.message.reply_text(s)
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s,
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True), parse_mode='HTML')
 
 
 # entry points
