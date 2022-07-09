@@ -27,21 +27,19 @@ ewaste_item = 0
 
 def help(update: Update, context: CallbackContext) -> None:
     "send a message when command help is issued"
-    s1 = "<u> What is this bot for? </u> \n\n Did you know that you can get cash incentives for simply recycling? Do your part for the environment with us today 😊! It's easy to r(easy)cle like 1 2 3!<br><br>"
-    s2 = "<u> Key Features </u> \n\n <ul> <li>Find your nearest recycling locations</li> </ul><br><br>"
-    s3 = "<u> What is Cash For Trash? </u> <br><br> Cash-for-Trash is an incentive programme by Public Waste Collectors, where residents may bring their recyclables to the Cash-for-Trash stations and cash is given in exchange for recyclables. More information <a href='https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/recycling-collection-points'>here</a>. <br><br>"
-    s4 = "<u> What is the E-Waste recyling program? </u> <br><br> E-Waste is your mother"
+    s1 = "<b>🌟What is Re(easy)cle?🌟 </b> \n\nDid you know that you can get cash incentives for simply recycling? Do your part for the environment with us today 😊! It's easy to r(easy)cle like 1 2 3🥳\n\n"
+    s2 = "<b><u>Key Features </u></b> \n 1️⃣ Find your nearest recycling locations based on category \n 2️⃣ Updated with latest locations from NEA\n 3️⃣ This service is fully automated and available 24/7\n\n"
+    s3 = "<b><u>What is Cash For Trash? </u></b> \nCash-for-Trash is an incentive programme by Public Waste Collectors, where residents may bring their recyclables to the Cash-for-Trash stations and cash is given in exchange for recyclables. More information <a href='https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/recycling-collection-points'>here</a>.\n\n"
+    s4 = "<b><u>What is the E-Waste National Recyling Program? </u></b>\nE-waste is electrical and electronic equipment of any kind that has been discarded. Under this programme launched in April 2001, the public waste collectors (PWCs) licensed by NEA are required to provide recycling bins and recycling collection services to all HDB estates, private landed properties and condominiums/private apartments opted into the public waste collection scheme. More information <a href='https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/e-waste-management'>here</a>."
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s1 + s2 + s3 + s4,
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode='HTML')
 
 def start(update: Update, context: CallbackContext) -> None:
-    s = "Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌷🌸💮🌹🥀\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
+    s = "🌸🌼🌻Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌸\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s,
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
-                              parse_mode='HTML')
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True), parse_mode='HTML')
 
 
 # entry points
