@@ -72,13 +72,13 @@ def ewaste(update: Update, context: CallbackContext) -> None:
 
 
 def ewaste_select(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(f'selected {update.message.text}')
+    update.message.reply_text(f'You have selected {update.message.text}')
 
     global ewaste_item
     ewaste_item = update.message.text
 
     buttons = [[KeyboardButton("Send Location", request_location=True)]]
-    update.message.reply_text("Send Loc", reply_markup=ReplyKeyboardMarkup(buttons))
+    update.message.reply_text("Please send your location", reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATIONEWASTE
 
 
