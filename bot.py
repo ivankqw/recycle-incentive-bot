@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 # defining the states
 LOCATION, LOCATIONEWASTE, EWASTESELECT = range(3)
 
+ewaste_item = 0
+
 
 # Define a few command handlers
 
@@ -70,6 +72,10 @@ def ewaste(update: Update, context: CallbackContext) -> None:
 
 def ewaste_select(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f'selected {update.message.text}')
+
+    global ewaste_item
+    ewaste_item = update.message.text
+
     buttons = [[KeyboardButton("Send Location", request_location=True)]]
     update.message.reply_text("Send Loc", reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATIONEWASTE
@@ -110,8 +116,22 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     curr_longitude = message.location['longitude']
     curr_latitude = message.location['latitude']
 
-    update.message.reply_text("locewaste")
-    logger.info(message)
+    directions_base_url = 'https://www.google.com/maps/dir/?api=1&destination='
+
+    df = pd.read_excel(data_path, sheet_name="e_waste")
+    df = df.loc[df[ewaste_item]]
+    df['distances'] = df.apply(lambda x: distance(x['Longitude'], x['Latitude'], curr_longitude, curr_latitude), axis=1)
+    result_df = df.sort_values('distances').iloc[0:5]
+
+    long_list = result_df['Longitude'].tolist()
+    lat_list = result_df['Latitude'].tolist()
+    directions_list = [directions_base_url + str(x) + "," + str(y) for x, y in zip(lat_list, long_list)]
+    address_list = result_df['Location'].tolist()
+
+    s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item})! 🚮😸'
+    for i in range(5):
+        s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
+    message.reply_text(s)
 
 
 def distance(lon1, lat1, lon2, lat2):
@@ -130,7 +150,7 @@ def main() -> None:
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("cashfortrash", callback=cashfortrash),
-                      CommandHandler("ewaste", callback=ewaste2)],
+                      CommandHandler("ewaste", callback=ewaste)],
         states={
             LOCATION: [MessageHandler(Filters.location, callback=location)],
             LOCATIONEWASTE: [MessageHandler(Filters.location, callback=location_ewaste)],
@@ -139,7 +159,7 @@ def main() -> None:
         fallbacks=[CommandHandler('cancel', cancel)]
     )
     dispatcher.add_handler(conv_handler)
-    dispatcher.add_handler(CallbackQueryHandler(handle_callback))
+    # dispatcher.add_handler(CallbackQueryHandler(handle_callback))
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help))
 
