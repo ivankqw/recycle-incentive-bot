@@ -75,7 +75,7 @@ def ewaste_select(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f'{update.message.text} Selected!')
 
     global ewaste_item
-    ewaste_item = update.message.text
+    ewaste_item = update.message.text[2:]
 
     buttons = [[KeyboardButton("Send Location 📍 for E-Waste", request_location=True)]]
     update.message.reply_text("Send me your location so that I can locate your nearest E-waste collection points!", reply_markup=ReplyKeyboardMarkup(buttons))
@@ -109,7 +109,7 @@ def location(update: Update, context: CallbackContext) -> None:
     s = 'Here are your current top 5 nearest Cash For Trash locations! 🚮😸'
     for i in range(5):
         s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions: {directions_list[i]}</b>'
-    message.reply_text(s)
+    message.reply_text(s, parse_mode='HTML')
     
     return ConversationHandler.END
 
@@ -138,7 +138,7 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     else:
         for i in range(5):
             s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
-    message.reply_text(s)
+    message.reply_text(s, parse_mode='HTML')
     return ConversationHandler.END
 
 
