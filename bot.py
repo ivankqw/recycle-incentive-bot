@@ -18,7 +18,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # defining the states
-LOCATION = range(1)
+LOCATION, LOCATIONEWASTE = range(2)
 
 
 # Define a few command handlers
@@ -54,19 +54,38 @@ def cashfortrash(update: Update, context: CallbackContext) -> None:
 
 
 def ewaste(update: Update, context: CallbackContext) -> None:
-    t = ""
+    t = "Welcome to E waste. Please select the type of item that you would like to recycle."
     update.message.reply_text(t)
-    reply_keyboard = [["/a", "/b", "/c"]]
-    update.message.reply_text("More Commands:",
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+    buttons = [
+        [InlineKeyboardButton("ICT", callback_data="ICT")], 
+        [InlineKeyboardButton("Batteries", callback_data="Batteries")],
+        [InlineKeyboardButton("Lamps", callback_data="Lamps")],
+        [InlineKeyboardButton("Regulated", callback_data="Regulated")],
+        [InlineKeyboardButton("Non-regulated", callback_data="Non-regulated")],
+    ]
+    update.message.reply_text("Type of item:",
+                              reply_markup=InlineKeyboardMarkup(buttons))
 
 
 def handle_callback(update: Update, context: CallbackContext) -> None:
     call = update.callback_query
     data = call.data
-    if "send_location_cash_trash" in data:
-        message = update.callback_query
-        message.edit_message_text(f'you are at {message.location.latitude}, {message.location.longitude}')
+    if "ICT" in data:
+        item = "ICT"
+    elif "Batteries" in data:
+        item = "Batteries"
+    elif "Lamps" in data:
+        item = "Lamps"
+    elif "Regulated" in data:
+        item = "Regulated"
+    elif "Non-regulated" in data:
+        item = "Non-regulated"
+
+    message = update.callback_query
+    message.edit_message_text(f'selected {item}')
+    buttons = [[KeyboardButton("Send Location", request_location=True)]]
+    update.callback_query.message.reply_text("Send Loc",reply_markup=ReplyKeyboardMarkup(buttons))
+    return LOCATIONEWASTE
 
 
 def cancel():
@@ -98,6 +117,13 @@ def location(update: Update, context: CallbackContext) -> None:
         s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
     message.reply_text(s)
 
+def location_ewaste(update: Update, context: CallbackContext) -> None:
+    message = update.message
+    curr_longitude = message.location['longitude']
+    curr_latitude = message.location['latitude']
+
+    update.message.reply_text("locewaste")
+    logger.info(message)
 
 def distance(lon1, lat1, lon2, lat2):
     R = 6371000  # radius of the Earth in m
@@ -116,7 +142,8 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("cashfortrash", cashfortrash), CommandHandler("ewaste", ewaste)],
         states={
-            LOCATION: [MessageHandler(Filters.location, location)]
+            LOCATION: [MessageHandler(Filters.location, location)],
+            LOCATIONEWASTE: [MessageHandler(Filters.text, location_ewaste)]
         },
         fallbacks=[CommandHandler('cancel', cancel)]
     )
@@ -124,6 +151,7 @@ def main() -> None:
     dispatcher.add_handler(CallbackQueryHandler(handle_callback))
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help))
+
 
     updater.start_polling()
     updater.idle()
