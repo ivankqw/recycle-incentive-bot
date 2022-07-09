@@ -36,6 +36,8 @@ def help(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(s1 + s2 + s3 + s4,
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode='HTML')
 
+    return ConversationHandler.END
+
 def start(update: Update, context: CallbackContext) -> None:
     s = "🌸🌼🌻Welcome to the Re(easy)cle! We are glad to have you here today 🌻🌼🌸\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
