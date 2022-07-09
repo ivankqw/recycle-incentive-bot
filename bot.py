@@ -48,23 +48,23 @@ def start(update: Update, context: CallbackContext) -> None:
 # entry points
 
 def cashfortrash(update: Update, context: CallbackContext) -> None:
-    t = "Welcome to Cash for Trash. You are Trash. Would you like to send your location?"
+    t = "Welcome to Cash for Trash Point Finder 💰 Send me your location so that I can locate your nearest Cash for Trash collection points!"
     # update.message.reply_text(t)
-    buttons = [[KeyboardButton("Send Location for Cash For Trash", request_location=True)]]
+    buttons = [[KeyboardButton("Send Location 📍 for Cash For Trash", request_location=True)]]
     update.message.reply_text(t,
                               reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATION
 
 
 def ewaste(update: Update, context: CallbackContext) -> None:
-    t = "Welcome to E waste. Please select the type of item that you would like to recycle."
+    t = "Welcome to E-waste Point Finder 🤖 Please select the type of item that you would like to recycle."
     update.message.reply_text(t)
     buttons = [
-        [KeyboardButton("ICT")],
-        [KeyboardButton("Batteries")],
-        [KeyboardButton("Lamps")],
-        [KeyboardButton("Regulated")],
-        [KeyboardButton("Non-regulated")],
+        [KeyboardButton("💻 ICT")],
+        [KeyboardButton("🔋 Batteries")],
+        [KeyboardButton("🛋️ Lamps")],
+        [KeyboardButton("🔵 Regulated")],
+        [KeyboardButton("🍎 Non-regulated")],
     ]
     update.message.reply_text("Type of item:",
                               reply_markup=ReplyKeyboardMarkup(buttons))
@@ -75,10 +75,10 @@ def ewaste_select(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f'You have selected {update.message.text}')
 
     global ewaste_item
-    ewaste_item = update.message.text
+    ewaste_item = update.message.text[2:]
 
-    buttons = [[KeyboardButton("Send Location", request_location=True)]]
-    update.message.reply_text("Please send your location", reply_markup=ReplyKeyboardMarkup(buttons))
+    buttons = [[KeyboardButton("Send Location 📍 for E-Waste", request_location=True)]]
+    update.message.reply_text("Send me your location so that I can locate your nearest E-waste collection points!", reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATIONEWASTE
 
 
@@ -108,11 +108,10 @@ def location(update: Update, context: CallbackContext) -> None:
     time_end_list = result_df['updated_time_end'].tolist()
     s = 'Here are your current top 5 nearest Cash For Trash locations! 🚮😸'
     for i in range(5):
-        s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
-    message.reply_text(s)
+        s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions: {directions_list[i]}</b>'
+    message.reply_text(s, parse_mode='HTML')
     
     return ConversationHandler.END
-
 
 def location_ewaste(update: Update, context: CallbackContext) -> None:
     message = update.message
@@ -132,14 +131,16 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     address_list = result_df['Location'].tolist()
 
     s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item})! 🚮😸'
+
     if len(address_list) < 5:
         for i in range(1):
-            s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
+            s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
     else:
         for i in range(5):
-            s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
-    message.reply_text(s)
+            s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
+    message.reply_text(s, parse_mode='HTML')
     return ConversationHandler.END
+
 
 
 def distance(lon1, lat1, lon2, lat2):
@@ -152,6 +153,7 @@ def distance(lon1, lat1, lon2, lat2):
 def main() -> None:
     token = os.getenv("TOKEN")
     updater = Updater(token)
+    j = updater.job_queue
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
