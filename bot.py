@@ -1,4 +1,5 @@
 import logging
+from tkinter import Button
 from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
 from telegram.ext import Updater, CommandHandler, CallbackContext, ConversationHandler, CallbackQueryHandler, \
     MessageHandler, Filters
@@ -109,6 +110,8 @@ def location(update: Update, context: CallbackContext) -> None:
     for i in range(5):
         s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
     message.reply_text(s)
+    
+    return ConversationHandler.END
 
 
 def location_ewaste(update: Update, context: CallbackContext) -> None:
@@ -129,9 +132,14 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     address_list = result_df['Location'].tolist()
 
     s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item})! 🚮😸'
-    for i in range(5):
-        s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
+    if len(address_list) < 5:
+        for i in range(1):
+            s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
+    else:
+        for i in range(5):
+            s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
     message.reply_text(s)
+    return ConversationHandler.END
 
 
 def distance(lon1, lat1, lon2, lat2):
