@@ -1,6 +1,7 @@
 import logging
-from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackContext, ConversationHandler, CallbackQueryHandler
+from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
+from telegram.ext import Updater, CommandHandler, CallbackContext, ConversationHandler, CallbackQueryHandler, \
+    MessageHandler, Filters
 from dotenv import load_dotenv
 import os
 
@@ -14,7 +15,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # defining the states
-FUCKOFF, FUCKYES = range(2)
+LOCATION = range(1)
 
 
 # Define a few command handlers
@@ -39,10 +40,13 @@ def start(update: Update, context: CallbackContext) -> None:
 
 def cashfortrash(update: Update, context: CallbackContext) -> None:
     t = "Welcome to Cash for Trash. You are Trash. Would you like to send your location?"
-    update.message.reply_text(t)
-    reply_keyboard = [["Yes", "No"]]
-    update.message.reply_text("More Commands:",
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+    # update.message.reply_text(t)
+    buttons = [[KeyboardButton("Send Location for Cash For Trash", request_location=True)]]
+    update.message.reply_text(t,
+                              reply_markup=ReplyKeyboardMarkup(buttons))
+    # message = update.message
+    # message.reply_text(f'you are at {message.location.latitude}, {message.location.longitude}')
+    return LOCATION
 
 
 def ewaste(update: Update, context: CallbackContext) -> None:
@@ -53,14 +57,23 @@ def ewaste(update: Update, context: CallbackContext) -> None:
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 
-def fuckoffcallback():
-    return
+def handle_callback(update: Update, context: CallbackContext) -> None:
+    call = update.callback_query
+    data = call.data
+    if "send_location_cash_trash" in data:
+        message = update.callback_query
+        message.edit_message_text(f'you are at {message.location.latitude}, {message.location.longitude}')
 
 
-def fuckyescallback(update: Update, context: CallbackContext) -> None:
-    query = update.callback_query
-    query.data
-    return
+def cancel():
+    pass
+
+
+def location(update: Update, context: CallbackContext) -> None:
+    message = update.message
+    curr_longitude = message.location['longitude']
+    curr_latitude = message.location['latitude']
+    message.reply_text(f'so you are at {curr_longitude}, {curr_latitude}')
 
 
 def main() -> None:
@@ -73,11 +86,12 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("cashfortrash", cashfortrash), CommandHandler("ewaste", ewaste)],
         states={
-            FUCKOFF: [CallbackQueryHandler(fuckoffcallback)],
-            FUCKYES: [CallbackQueryHandler(fuckyescallback)]
-        }
+            LOCATION: [MessageHandler(Filters.location, location)]
+        },
+        fallbacks=[CommandHandler('cancel', cancel)]
     )
-
+    dispatcher.add_handler(conv_handler)
+    dispatcher.add_handler(CallbackQueryHandler(handle_callback))
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help))
 
