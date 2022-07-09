@@ -1,4 +1,5 @@
 import logging
+from tkinter import Button
 from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
 from telegram.ext import Updater, CommandHandler, CallbackContext, ConversationHandler, CallbackQueryHandler, \
     MessageHandler, Filters
@@ -34,6 +35,8 @@ def help(update: Update, context: CallbackContext) -> None:
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s1 + s2 + s3 + s4,
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode='HTML')
+
+    return ConversationHandler.END
 
 def start(update: Update, context: CallbackContext) -> None:
     s = "🌸🌼🌻Welcome to the Re(easy)cle! We are glad to have you here today 🌻🌼🌸\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
@@ -107,6 +110,8 @@ def location(update: Update, context: CallbackContext) -> None:
     for i in range(5):
         s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions: {directions_list[i]}</b>'
     message.reply_text(s)
+    
+    return ConversationHandler.END
 
 def location_ewaste(update: Update, context: CallbackContext) -> None:
     message = update.message
@@ -126,9 +131,16 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     address_list = result_df['Location'].tolist()
 
     s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item})! 🚮😸'
-    for i in range(5):
-        s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
-    message.reply_text(s, parse_mode='HTML')
+
+    if len(address_list) < 5:
+        for i in range(1):
+            s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
+    else:
+        for i in range(5):
+            s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
+    message.reply_text(s)
+    return ConversationHandler.END
+
 
 
 def distance(lon1, lat1, lon2, lat2):
