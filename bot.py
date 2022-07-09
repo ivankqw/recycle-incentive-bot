@@ -133,6 +133,7 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     address_list = result_df['Location'].tolist()
 
     s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item})! 🚮😸'
+    message.reply_text(s, parse_mode='HTML')
 
     if len(address_list) < 5:
         for i in range(1):
