@@ -50,7 +50,7 @@ def start(update: Update, context: CallbackContext) -> None:
 def cashfortrash(update: Update, context: CallbackContext) -> None:
     t = "Welcome to Cash for Trash Point Finder 💰 Send me your location so that I can locate your nearest Cash for Trash collection points!"
     # update.message.reply_text(t)
-    buttons = [[KeyboardButton("Send Location 📍 for Cash For Trash", request_location=True)]]
+    buttons = [[KeyboardButton("Send Location 📍 for Cash For Trash 💰", request_location=True)]]
     update.message.reply_text(t,
                               reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATION
@@ -77,7 +77,7 @@ def ewaste_select(update: Update, context: CallbackContext) -> None:
     global ewaste_item
     ewaste_item = update.message.text[2:]
 
-    buttons = [[KeyboardButton("Send Location 📍 for E-Waste", request_location=True)]]
+    buttons = [[KeyboardButton("Send Location 📍 for E-Waste 🤖", request_location=True)]]
     update.message.reply_text("Send me your location so that I can locate your nearest E-waste collection points!", reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATIONEWASTE
 
