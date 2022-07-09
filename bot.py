@@ -36,7 +36,7 @@ def help(update: Update, context: CallbackContext) -> None:
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode='HTML')
 
 def start(update: Update, context: CallbackContext) -> None:
-    s = "🌸🌼🌻Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌸\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
+    s = "🌸🌼🌻Welcome to the Re(easy)cle! We are glad to have you here today 🌻🌼🌸\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s,
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True), parse_mode='HTML')
