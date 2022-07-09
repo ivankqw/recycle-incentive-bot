@@ -34,15 +34,18 @@ def help(update: Update, context: CallbackContext) -> None:
     s4 = "<b><u>What is the E-Waste National Recyling Program? </u></b>\nE-waste is electrical and electronic equipment of any kind that has been discarded. Under this programme launched in April 2001, the public waste collectors (PWCs) licensed by NEA are required to provide recycling bins and recycling collection services to all HDB estates, private landed properties and condominiums/private apartments opted into the public waste collection scheme. More information <a href='https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/e-waste-management'>here</a>."
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s1 + s2 + s3 + s4,
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),parse_mode='HTML')
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+                              parse_mode='HTML')
 
     return ConversationHandler.END
+
 
 def start(update: Update, context: CallbackContext) -> None:
     s = "🌸🌼🌻Welcome to the Re(easy)cle! We are glad to have you here today 🌻🌼🌸\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
     reply_keyboard = [["/cashfortrash", "/ewaste"]]
     update.message.reply_text(s,
-                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True), parse_mode='HTML')
+                              reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
+                              parse_mode='HTML')
 
 
 # entry points
@@ -78,7 +81,8 @@ def ewaste_select(update: Update, context: CallbackContext) -> None:
     ewaste_item = update.message.text[2:]
 
     buttons = [[KeyboardButton("Send Location 📍 for E-Waste 🤖", request_location=True)]]
-    update.message.reply_text("Send me your location so that I can locate your nearest E-waste collection points!", reply_markup=ReplyKeyboardMarkup(buttons))
+    update.message.reply_text("Send me your location so that I can locate your nearest E-waste collection points!",
+                              reply_markup=ReplyKeyboardMarkup(buttons))
     return LOCATIONEWASTE
 
 
@@ -106,13 +110,16 @@ def location(update: Update, context: CallbackContext) -> None:
     day_list = result_df['Day'].tolist()
     time_start_list = result_df['updated_time_start'].tolist()
     time_end_list = result_df['updated_time_end'].tolist()
-    s = 'Here are your current top 5 nearest Cash For Trash locations! 🚮😸'
-    for i in range(5):
-        s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
+    s = 'Here are your current top 5 nearest Cash For Trash locations, sorted from nearest to farthest! 🚮😸'
     message.reply_text(s)
+    for i in range(5):
+        # s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n Get Directions: {directions_list[i]}'
+        message.reply_text(
+            f'\n\n {i + 1}. \n Address: {address_list[i]} \n Collection day(s): {day_list[i]} \n Start Time: {time_start_list[i]} \n End Time: {time_end_list[i]} \n\n <b>Get Directions</b>: {directions_list[i]}', parse_mode='HTML')
+    # message.reply_text(s)
 
-    
     return ConversationHandler.END
+
 
 def location_ewaste(update: Update, context: CallbackContext) -> None:
     message = update.message
@@ -131,19 +138,24 @@ def location_ewaste(update: Update, context: CallbackContext) -> None:
     directions_list = [directions_base_url + str(x) + "," + str(y) for x, y in zip(lat_list, long_list)]
     address_list = result_df['Location'].tolist()
 
-    s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item})! 🚮😸'
+    s = f'Here are your current top 5 nearest E-Waste recycling locations ({ewaste_item}), sorted from nearest to farthest! 🚮😸'
     message.reply_text(s, parse_mode='HTML')
 
     if len(address_list) < 5:
         for i in range(1):
-            s += f'\n\n {i + 1}. \n <u>Address: {address_list[i]}</u> \n \n\n <b>Get Directions</b>: {directions_list[i]}'
+            # s += f'\n\n {i + 1}. \n' +  "<u>Address:" +  f'{address_list[i]}' + "</u> \n \n\n <b>Get Directions</b>:" + f'{directions_list[i]}'
+            message.reply_text(
+                f'\n\n {i + 1}. \n' + "Address: " + f'{address_list[i]}' + " \n \n\n <b>Get Directions</b>: " + f'{directions_list[i]}',
+                parse_mode='HTML')
     else:
         for i in range(5):
-            s += f'\n\n {i + 1}. \n Address: {address_list[i]} \n \n\n Get Directions: {directions_list[i]}'
-    message.reply_text(s)
-    
-    return ConversationHandler.END
+            # s += f'\n\n {i + 1}. \n' +  "<u>Address:" +  f'{address_list[i]}' + "</u> \n \n\n <b>Get Directions</b>:" + f'{directions_list[i]}'
+            message.reply_text(
+                f'\n\n {i + 1}. \n' + "Address: " + f'{address_list[i]}' + " \n \n\n <b>Get Directions</b>: " + f'{directions_list[i]}',
+                parse_mode='HTML')
+    # message.reply_text(s, parse_mode='HTML')
 
+    return ConversationHandler.END
 
 
 def distance(lon1, lat1, lon2, lat2):
