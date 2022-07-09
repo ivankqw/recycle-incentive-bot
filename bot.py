@@ -25,17 +25,17 @@ LOCATION = range(1)
 
 def help(update: Update, context: CallbackContext) -> None:
     "send a message when command help is issued"
-    s = "Hi and welcome"
+    s = "Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌷🌸💮🌹🥀\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
     update.message.reply_text(s)
-    reply_keyboard = [["/a", "/b", "/c"]]
-    update.message.reply_text("More Commands:",
+    reply_keyboard = [["/cashfortrash", "/ewaste"]]
+    update.message.reply_text(s,
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-    update.message.reply_text(update.message.text)
-
 
 def start(update: Update, context: CallbackContext) -> None:
-    reply_keyboard = [["/cashfortrash", "/ewaste", "/help"]]
-    update.message.reply_text("Hi what would you like to recycle? You lil shit?",
+    s = "Welcome to the Recycle Incentive Bot! We are glad to have you here today 🌻🌼🌷🌸💮🌹🥀\n\n Click on /help to find out more about this bot or get started by clicking on the following buttons!"
+    update.message.reply_text(s)
+    reply_keyboard = [["/cashfortrash", "/ewaste"]]
+    update.message.reply_text(s,
                               reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
 
@@ -47,8 +47,6 @@ def cashfortrash(update: Update, context: CallbackContext) -> None:
     buttons = [[KeyboardButton("Send Location for Cash For Trash", request_location=True)]]
     update.message.reply_text(t,
                               reply_markup=ReplyKeyboardMarkup(buttons))
-    # message = update.message
-    # message.reply_text(f'you are at {message.location.latitude}, {message.location.longitude}')
     return LOCATION
 
 
