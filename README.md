@@ -29,4 +29,4 @@ R(easy)cle is a user-friendly Telegram bot that helps you find recycling spots n
 ## How we built it
 - The R(easy)cle telegram bot was built using the '''python-telegram-bot''' API on '''Python'''
 - Python Pandas was largely used to perform data retrieval and manipulation.
-- Data Sources: [OneMap](https://www.onemap.gov.sg/docs/) and [NEA] (https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/recycling-collection-points)
+- Data Sources: [OneMap](https://www.onemap.gov.sg/docs/) and [NEA](https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/recycling-collection-points)
