@@ -1,10 +1,10 @@
-Recycle Incentive Telegram Bot
+R(easy)cle, the Recycle Incentive Telegram Bot
 =====================
 By Ivan Koh, Valentin Khoo, Chong Kaiyu, Bandy Tan
 Life Hack 2022
 
-* **[Devpost Link](https://devpost.com/software/r-easy-cle)**
-* **[Try the Bot](https://t.me/recycle_incentive_bot)**
+* **[Devpost](https://devpost.com/software/r-easy-cle)**
+* **[Telegram Bot](https://t.me/recycle_incentive_bot)**
 
 ## Inspiration
 Many Singaporeans are unaware of the main 2 initiatives put in place to incentivise Singaporeans to recycle more: [The E-waste National Recycling Program](https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/e-waste-management/where-to-recycle-e-waste) and the [Cash-for-Trash Program](https://www.nea.gov.sg/our-services/waste-management/3r-programmes-and-resources/recycling-collection-points). 
