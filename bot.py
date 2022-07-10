@@ -175,6 +175,7 @@ def distance(lon1, lat1, lon2, lat2):
 
 def main() -> None:
     token = os.getenv("TOKEN")
+    app_name = os.getenv("APP_NAME")
     updater = Updater(token)
     j = updater.job_queue
 
@@ -200,7 +201,7 @@ def main() -> None:
     updater.start_webhook(listen="0.0.0.0",
                           port=int(os.environ.get('PORT', 5000)),
                           url_path=token,
-                          webhook_url=+ token
+                          webhook_url= app_name + token
                           )
     updater.idle()
 
